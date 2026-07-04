@@ -149,7 +149,7 @@ def get_groq_response(system_prompt: str, user_prompt: str) -> str:
     """Query Groq API with Llama-3-8b model."""
     try:
         completion = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
