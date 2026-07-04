@@ -53,18 +53,12 @@ Follow these steps to deploy your bot 24/7 on Render using the pre-configured Re
 3. Leave "Initialize this repository with..." options **unchecked** (no README, no .gitignore).
 
 ### Step 2: Push your Local Git Repository to GitHub
-Since a local Git repository has already been initialized and committed in this directory, run the following commands in your terminal to link and push your code:
+The local Git repository has already been configured to point to your repository: `https://github.com/FightClubMember/Super-Study`. 
+
+To upload your code to GitHub, simply open your terminal in this directory and execute:
 ```powershell
-# Add your remote GitHub URL
-git remote add origin https://github.com/<your-github-username>/astraai-hub-bot.git
-
-# Rename default branch to main
-git branch -M main
-
-# Push to your GitHub repo
 git push -u origin main
 ```
-*(Replace `<your-github-username>` with your actual GitHub username).*
 
 ### Step 3: Deploy to Render using Blueprints
 Render's Blueprint service automatically parses the `render.yaml` file in the repository to launch the bot as a 24/7 Background Worker.
