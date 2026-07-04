@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AstraAI Hub | Student Ecosystem</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-satellite-dish pulse-icon"></i>
+                <span>ASTRA<b>AI</b> HUB</span>
+            </div>
+            <div class="user-pill" id="user-pill">
+                <span class="user-initials" id="header-initials">AS</span>
+                <span class="username" id="header-username">Loading...</span>
+            </div>
+        </header>
+
+        <!-- Main Workspace Tabs -->
+        <main class="app-content">
+            <!-- TAB 1: DASHBOARD / PROFILE -->
+            <section id="tab-dashboard" class="tab-pane active">
+                <div class="premium-card profile-hero">
+                    <div class="profile-meta">
+                        <div class="profile-avatar">
+                            <span id="avatar-letters">ST</span>
+                        </div>
+                        <div class="profile-details">
+                            <span class="badge" id="profile-badge">ASPIRANT CADET</span>
+                            <h2 id="profile-name">Astra Student</h2>
+                        </div>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <span class="label">LEVEL</span>
+                            <span class="value" id="profile-lvl">01</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">TOTAL XP</span>
+                            <span class="value" id="profile-xp">0 XP</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">STREAK</span>
+                            <span class="value" id="profile-streak">0 Days 🔥</span>
+                        </div>
+                    </div>
+
+                    <div class="xp-progress-container">
+                        <div class="xp-labels">
+                            <span id="xp-current">0 XP</span>
+                            <span id="xp-next">100 XP</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="xp-bar" style="width: 0%;"></div>
+                        </div>
+                        <span class="progress-sub" id="xp-sub-text">0 / 100 XP to Level Up</span>
+                    </div>
+                </div>
+
+                <div class="quick-action-row">
+                    <button class="action-btn checkin-btn" id="checkin-btn">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Daily Consistency Check-in (+20 XP)</span>
+                    </button>
+                </div>
+
+                <div class="feedback-banner hidden" id="checkin-feedback">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <p id="checkin-msg">Check-in processed successfully.</p>
+                </div>
+            </section>
+
+            <!-- TAB 2: LEADERBOARD -->
+            <section id="tab-leaderboard" class="tab-pane">
+                <div class="section-header">
+                    <h3>🥈 GLOBAL SCOREBOARD</h3>
+                    <p>Benchmark your standing against top competitive exam aspirants</p>
+                </div>
+
+                <div class="leaderboard-container">
+                    <div class="leaderboard-table" id="leaderboard-table">
+                        <div class="loader-container">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i> Loading ranks...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: SCHOLASTIC DUEL -->
+            <section id="tab-duel" class="tab-pane">
+                <div id="duel-selection" class="duel-view active">
+                    <div class="section-header">
+                        <h3>⚔️ SCHOLASTIC BATTLE ARENA</h3>
+                        <p>Revision through high-stakes multiple-choice challenges</p>
+                    </div>
+
+                    <div class="arena-grid">
+                        <div class="arena-card" data-arena="1">
+                            <div class="arena-icon cyan"><i class="fa-solid fa-calculator"></i></div>
+                            <h4>Speed Aptitude Arena</h4>
+                            <p>Fast-paced calculation shortcuts and logical tests for CGL/CDS.</p>
+                            <button class="btn btn-cyan btn-sm">Enter Arena</button>
+                        </div>
+                        <div class="arena-card" data-arena="2">
+                            <div class="arena-icon violet"><i class="fa-solid fa-gavel"></i></div>
+                            <h4>UPSC Concept Clash</h4>
+                            <p>Deep analytical GS queries based on Laxmikanth, Mrunal, and NCERT.</p>
+                            <button class="btn btn-violet btn-sm">Enter Arena</button>
+                        </div>
+                        <div class="arena-card" data-arena="3">
+                            <div class="arena-icon amber"><i class="fa-solid fa-spell-check"></i></div>
+                            <h4>Spelling & Grammar Lab</h4>
+                            <p>Pinpoint syntax bugs, syllable anomalies, and verbal logic.</p>
+                            <button class="btn btn-amber btn-sm">Enter Arena</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="duel-game" class="duel-view hidden">
+                    <div class="game-header">
+                        <span class="game-arena-title" id="game-arena-title">UPSC Concept Clash</span>
+                        <span class="game-score" id="game-score">Score: 0 / 5</span>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-question-num" id="game-q-num">QUESTION 1 OF 5</div>
+                        <p class="game-question-text" id="game-q-text">Loading question...</p>
+
+                        <div class="game-options-grid" id="game-options-grid">
+                            <!-- Options dynamically rendered -->
+                        </div>
+                    </div>
+
+                    <div class="game-feedback-card hidden" id="game-feedback-card">
+                        <h4 id="feedback-header">✅ CORRECT</h4>
+                        <p id="feedback-explanation">Explanation text goes here...</p>
+                        <button class="btn btn-primary" id="game-next-btn">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div id="duel-result" class="duel-view hidden">
+                    <div class="result-card">
+                        <i class="fa-solid fa-trophy trophy-glow"></i>
+                        <h2>Duel Completed!</h2>
+                        <div class="result-score-lbl" id="result-score-text">Final Score: 4 / 5</div>
+                        <p id="result-xp-text">You earned +50 XP and secured your focus standing!</p>
+                        <button class="btn btn-primary" id="result-close-btn">Return to Arenas</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: RESUME BUILDER -->
+            <section id="tab-resume" class="tab-pane">
+                <div class="section-header">
+                    <h3>📄 ATS RESUME COMPILER</h3>
+                    <p>Compile an executive, recruiter-aligned CV template in standard formats</p>
+                </div>
+
+                <div class="wizard-container">
+                    <!-- Progress Tracker -->
+                    <div class="wizard-steps-indicator">
+                        <span class="step-dot active" data-step="1">1</span>
+                        <span class="step-dot" data-step="2">2</span>
+                        <span class="step-dot" data-step="3">3</span>
+                        <span class="step-dot" data-step="4">4</span>
+                        <span class="step-dot" data-step="5">5</span>
+                        <span class="step-dot" data-step="6">6</span>
+                    </div>
+
+                    <!-- Wizard Form Container -->
+                    <div class="wizard-form-box">
+                        <!-- Step 1 -->
+                        <div class="wizard-step-pane active" id="step-pane-1">
+                            <h4>Phase 1: Contact Details & Headline</h4>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="cv-name" placeholder="Amit Sharma">
+                            </div>
+                            <div class="form-group">
+                                <label>Professional Email</label>
+                                <input type="email" id="cv-email" placeholder="amit.sharma@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="text" id="cv-phone" placeholder="+91-9999999999">
+                            </div>
+                            <div class="form-group">
+                                <label>Professional Headline</label>
+                                <input type="text" id="cv-headline" placeholder="UPSC Aspirant & Economics Specialist">
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="wizard-step-pane hidden" id="step-pane-2">
+                            <h4>Phase 2: Professional Summary</h4>
+                            <div class="form-group">
+                                <label>Core Academic / Career Summary (Action-verb heavy)</label>
+                                <textarea id="cv-summary" rows="5" placeholder="Highly disciplined General Studies analyst with extensive knowledge in macroeconomics and Indian polity. Proven consistency in mock writing..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="wizard-step-pane hidden" id="step-pane-3">
+                            <h4>Phase 3: Academic Pedigree</h4>
+                            <div class="form-group">
+                                <label>Degrees, Institutions & GPAs</label>
+                                <textarea id="cv-education" rows="5" placeholder="B.A. (Hons.) Economics, Delhi University (8.2 CGPA) - 2024&#10;Higher Secondary Education, CBSE (93.4%) - 2021"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="wizard-step-pane hidden" id="step-pane-4">
+                            <h4>Phase 4: Core Competencies & Skills</h4>
+                            <div class="form-group">
+                                <label>Technical Skills, Software & Subject Domains</label>
+                                <textarea id="cv-skills" rows="5" placeholder="Polity Analysis, Data Analytics, Python, Quantitative Aptitude, Hindi Orthography Diagnostic"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="wizard-step-pane hidden" id="step-pane-5">
+                            <h4>Phase 5: Projects & Competitive Achievements</h4>
+                            <div class="form-group">
+                                <label>Competitions, Mock rankings, or Research</label>
+                                <textarea id="cv-projects" rows="5" placeholder="• Secured Rank 145 in National Mock Aptitude Olympiad 2025&#10;• Author of research paper: 'Fiscal Impacts of Unified Tax regimes'"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Step 6 -->
+                        <div class="wizard-step-pane hidden" id="step-pane-6">
+                            <h4>Phase 6: Experience & Leadership</h4>
+                            <div class="form-group">
+                                <label>Internships, Positions of Responsibility & Memberships</label>
+                                <textarea id="cv-experience" rows="5" placeholder="• President of College Debating Society (managed 40+ members)&#10;• Research Intern, Center for Public Policy Research (2 months)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation buttons -->
+                    <div class="wizard-nav-row">
+                        <button class="btn btn-outline" id="cv-prev-btn" disabled>Back</button>
+                        <button class="btn btn-primary" id="cv-next-btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Compiled Output Pane -->
+                <div class="compiled-resume-box hidden" id="cv-compiled-box">
+                    <h4>✨ Resume Compiled! (+30 XP)</h4>
+                    <p>Select your format format below, copy the raw code, and paste into standard markdown files or Overleaf compilers:</p>
+                    
+                    <div class="format-tab-row">
+                        <button class="format-btn active" id="btn-format-md">Markdown</button>
+                        <button class="format-btn" id="btn-format-tex">LaTeX</button>
+                    </div>
+
+                    <div class="code-box-container">
+                        <button class="copy-code-btn" id="copy-cv-btn"><i class="fa-solid fa-copy"></i> Copy</button>
+                        <pre id="cv-code-display">Code goes here...</pre>
+                    </div>
+
+                    <button class="btn btn-outline btn-full" id="cv-reset-btn">Compile New Resume</button>
+                </div>
+            </section>
+
+            <!-- TAB 5: PRODUCTIVITY -->
+            <section id="tab-productivity" class="tab-pane">
+                <!-- Subtab Navigation -->
+                <div class="subtab-nav-row">
+                    <button class="sub-btn active" data-sub="pomodoro">⏱️ Pomodoro</button>
+                    <button class="sub-btn" data-sub="eisenhower">📌 Eisenhower Matrix</button>
+                    <button class="sub-btn" data-sub="daylight">☀️ Day Timelines</button>
+                </div>
+
+                <div class="sub-content-container">
+                    <!-- SUBTAB 1: POMODORO -->
+                    <div id="sub-pomodoro" class="sub-pane active">
+                        <div class="pomodoro-timer-box">
+                            <div class="timer-circle-container">
+                                <svg class="timer-svg" viewBox="0 0 100 100">
+                                    <circle class="timer-track" cx="50" cy="50" r="45"></circle>
+                                    <circle class="timer-fill" id="timer-fill-circle" cx="50" cy="50" r="45" style="stroke-dashoffset: 0;"></circle>
+                                </svg>
+                                <div class="timer-text" id="timer-time">50:00</div>
+                            </div>
+
+                            <div class="timer-controls">
+                                <button class="timer-ctrl-btn play" id="timer-toggle-btn"><i class="fa-solid fa-play"></i> Start</button>
+                                <button class="timer-ctrl-btn reset" id="timer-reset-btn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                            </div>
+
+                            <div class="pomodoro-rewards-info">
+                                <p>Complete a full **50-minute deep study block** paired with a **10-minute cognitive reset** to maintain concentration. Completion awards **+10 XP**.</p>
+                                <button class="btn btn-violet btn-sm hidden" id="claim-timer-xp-btn">Claim Focus XP! (+10 XP)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 2: EISENHOWER -->
+                    <div id="sub-eisenhower" class="sub-pane hidden">
+                        <div class="matrix-input-row">
+                            <input type="text" id="eisen-task-name" placeholder="Enter task name...">
+                            <select id="eisen-task-quad">
+                                <option value="do">1. Urgent & Important (Do First)</option>
+                                <option value="schedule">2. Important, Not Urgent (Schedule)</option>
+                                <option value="delegate">3. Urgent, Not Important (Delegate)</option>
+                                <option value="eliminate">4. Not Urgent, Not Important (Void)</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" id="eisen-add-btn">Add</button>
+                        </div>
+
+                        <div class="eisenhower-grid">
+                            <div class="quadrant quad-do">
+                                <h5>1. URGENT & IMPORTANT (DO FIRST)</h5>
+                                <ul id="list-quad-do" class="eisen-list"></ul>
+                            </div>
+                            <div class="quadrant quad-schedule">
+                                <h5>2. IMPORTANT, NOT URGENT (SCHEDULE)</h5>
+                                <ul id="list-quad-schedule" class="eisen-list"></ul>
+                            </div>
+                            <div class="quadrant quad-delegate">
+                                <h5>3. URGENT, NOT IMPORTANT (DELEGATE)</h5>
+                                <ul id="list-quad-delegate" class="eisen-list"></ul>
+                            </div>
+                            <div class="quadrant quad-eliminate">
+                                <h5>4. NOT URGENT / ELIMINATE (VOID)</h5>
+                                <ul id="list-quad-eliminate" class="eisen-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 3: DAYLIGHT -->
+                    <div id="sub-daylight" class="sub-pane hidden">
+                        <div class="premium-card timeline-card">
+                            <h4>☀️ Daylight Strategy Timetable</h4>
+                            <p class="desc">A structured layout designed for full-time at-home aspirants, mimicking a professional 9-to-5 desk job.</p>
+                            
+                            <div class="timeline-ui">
+                                <div class="timeline-node violet">
+                                    <div class="time">08:00 - 13:00</div>
+                                    <div class="details">
+                                        <h5>Morning Deep Focus Slot</h5>
+                                        <p>Execute hardest topic blocks. Engage 'Eat the Frog' modules first.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-node amber">
+                                    <div class="time">13:00 - 14:00</div>
+                                    <div class="details">
+                                        <h5>Lunch & Power Reset</h5>
+                                        <p>Clean break, complete cognitive rest. No screen stimulus.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-node cyan">
+                                    <div class="time">14:00 - 18:00</div>
+                                    <div class="details">
+                                        <h5>Secondary Revisions & Re-tests</h5>
+                                        <p>Solve Reasoning papers, calculation shortcuts, and check doubt logs.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-node gray">
+                                    <div class="time">18:00 onwards</div>
+                                    <div class="details">
+                                        <h5>Consolidation & Recovery</h5>
+                                        <p>Daily news analysis, light revisions. Unplug early to secure sleep cycles.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: AI MENTOR CHAT -->
+            <section id="tab-mentor" class="tab-pane">
+                <!-- Subtab Navigation -->
+                <div class="subtab-nav-row" style="margin-bottom: 12px;">
+                    <button class="sub-btn active" data-sub="chat">💬 AI Mentor Chat</button>
+                    <button class="sub-btn" data-sub="diagnose">🔍 Spelling & Hindi Lab</button>
+                </div>
+
+                <!-- Chat Room -->
+                <div id="sub-chat" class="mentor-pane active">
+                    <div class="chat-wrapper">
+                        <!-- Red alert banner for Isolation -->
+                        <div class="alert-banner red hidden" id="isolation-banner">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <div>
+                                <h5>🚨 ACADEMIC BANK ISOLATION ACTIVE</h5>
+                                <p> Impending college semester exams detected. Focus entirely on university degrees. Competitive functions locked.</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-logs" id="chat-logs">
+                            <div class="chat-msg bot">
+                                <p>Greetings. I am your academic architect. Submit your Indian Polity, macroeconomics, geography, quant, or spelling doubts. Let's analyze details systematically.</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-bar">
+                            <input type="text" id="chat-input" placeholder="Explain Fundamental Rights or Mrunal's Pillar 1...">
+                            <button id="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spelling Diagnostic Lab -->
+                <div id="sub-diagnose" class="mentor-pane hidden">
+                    <div class="diagnose-box">
+                        <textarea id="diag-input" rows="5" placeholder="Enter English sentences or Hindi text (e.g. 'He was a kavi' or spelling checks)..."></textarea>
+                        <button class="btn btn-primary btn-full" id="diag-btn">Diagnose Spelling & Orthography</button>
+
+                        <div class="diagnose-output-card hidden" id="diag-output-card">
+                            <h4>🔍 Diagnostic Report</h4>
+                            <div id="diag-report-content" class="report-content">Reports go here...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="app-nav">
+            <button class="nav-item active" data-tab="dashboard">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span>Vitals</span>
+            </button>
+            <button class="nav-item" data-tab="leaderboard">
+                <i class="fa-solid fa-trophy"></i>
+                <span>Ranks</span>
+            </button>
+            <button class="nav-item" data-tab="duel">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Battle</span>
+            </button>
+            <button class="nav-item" data-tab="resume">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>Resume</span>
+            </button>
+            <button class="nav-item" data-tab="productivity">
+                <i class="fa-solid fa-circle-play"></i>
+                <span>Focus</span>
+            </button>
+            <button class="nav-item" data-tab="mentor">
+                <i class="fa-solid fa-robot"></i>
+                <span>Mentor</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="app.js"></script>
+</body>
+</html>

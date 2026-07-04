@@ -1,9 +1,9 @@
 services:
-  - type: worker
-    name: astraai-hub-bot
+  - type: web
+    name: super-study
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python bot.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: TELEGRAM_BOT_TOKEN
         sync: false
